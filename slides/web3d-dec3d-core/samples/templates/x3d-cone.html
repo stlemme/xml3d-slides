@@ -1,0 +1,26 @@
+<template
+	bottomradius="1.0"
+	height="2.0"
+	subdivision="32"
+	topradius="0"
+
+	bottom="true"
+	ccw="true"
+	lit="true"
+	metadata="X3DMetadataObject"
+	side="true"
+	solid="true"
+	top="true"
+	useGeoCache="true"
+	name="x3d-cone">
+	<sg-mesh>
+		<w3d-data compute="x3d.createCone()">
+			<w3d-value type="float" name="topradius">{{topradius}}</w3d-value>
+			<w3d-value type="int" name="segments">{{subdivision}}</w3d-value>
+			<w3d-value type="float" name="radius">{{bottomradius}}</w3d-value>
+			<w3d-value type="float" name="height">{{height}}</w3d-value>
+			<w3d-value type="string" name="primitiveType">triangles</w3d-value>
+			<w3d-value type="float3" name="normal">1 0 0 1 0 0</w3d-value>
+		</w3d-data>
+	</sg-mesh>
+</template>

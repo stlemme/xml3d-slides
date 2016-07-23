@@ -1,0 +1,19 @@
+<template
+	radius="1.0"
+	subdivision="24 24"
+
+	ccw="true"
+	lit="true"
+	metadata="X3DMetadataObject"
+	solid="true"
+	useGeoCache="true">
+	<sg-mesh>
+		<w3d-data compute="x3d.createSphere()">
+			<w3d-value name="segments" type="int">{{subdivision}}</w3d-value>
+			<w3d-value name="radius" type="float">{{radius}}</w3d-value>
+			<w3d-value name="primitiveType" type="string">triangles</w3d-value>
+			<w3d-value name="phi" type="float">0 1</w3d-value>
+			<w3d-value name="theta" type="float">0 1</w3d-value>
+		</w3d-data>
+	</sg-mesh>
+</template>

@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+
+        <title>reveal.js - The HTML Presentation Framework</title>
+
+        <meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+        <meta name="author" content="Hakim El Hattab">
+
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+        <link rel="stylesheet" href="../reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="../reveal.js/css/theme/cg-saar.css" id="theme">
+
+        <!-- For syntax highlighting -->
+        <link rel="stylesheet" href="../reveal.js/lib/css/zenburn.css">
+
+        <!-- If the query includes 'print-pdf', use the PDF print sheet -->
+        <script>
+            document.write( '<link rel="stylesheet" href="../reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+        </script>
+
+        <!--[if lt IE 9]>
+        <script src="../reveal.js/lib/js/html5shiv.js"></script>
+        <![endif]-->
+    </head>
+
+    <body>
+
+        <div class="reveal">
+
+            <!-- Any section element inside of this container is displayed as a slide -->
+            <div class="slides">
+
+<section>
+    <h1>The Basic Building Blocks of Declarative 3D on the Web</h1>
+    <p><u>Stefan Lemme</u>, Jan Sutter,<br/>Christian Schlinkmann, Philipp Slusallek</p>
+    <br/>
+    <div class="cg-logos" >
+        <img src="media/ivci-logo.png" />
+        <img src="media/dfki-logo.png" />
+        <img src="media/uds-logo.jpg" />
+    </div>
+</section>
+
+<section>
+    <section data-markdown>
+    ## Introduction
+
+    * WebGL enabled real-time 3D graphics on the Web
+    * HTML's canvas element has introduced an imperative interface
+    * Core content technologies, HTML and CSS, are declarative
+    * *Declarative 3D for the Web (Dec3D)* with two most notable approaches: **X3DOM** and **XML3D**
+    </section>
+
+    <section>
+        <h2>Integration Levels of Dec3D</h2>
+        <img src="media/original_integration.svg"/>
+        <ul>
+        <li>Integration levels according to Jankowski et al. [2013]</li>
+        <li>Focus on the DOM integration taking into account recent Web technologies (i.e. Web Components)</li>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Two Philosophies and their<br/>Momentum for Adoption</h2>
+        <div class="cg-left" data-markdown>
+        ### X3DOM
+        * X3D backward compatibility 
+        * Highly specialized nodes
+        * Easier for beginners to start from scratch
+        * Harder to extend with application-specific functionality
+        </div>
+        <div class="cg-right" data-markdown>
+        ### XML3D
+        * Minimal number of 3D-specific DOM elements
+        * Providing only a generic set of elements
+        * Application-related functionality left to JavaScript
+        * More boiler-plate to start with
+        </div>
+        <aside class="notes">
+        Both approaches have not managed to gain the momentum for a wide adoption in theWeb developer community. On the other hand, libraries such as three.js that do not provide any integration with the existing Web technology stack beyond the first Level have a large community and strong momentum.
+        We maintain that Dec3D is an important part of the future of 3D graphics on the Web and its adoption should be the primary goal of the Declarative 3D community
+        </aside>
+    </section>
+
+    <section data-markdown>
+    ## Two Major Aspects
+    
+    1. **Usability**
+      * Web developers *without* an extensive background in 3D graphics
+      * Developers need to *quickly start* to incorporate 3D renderings
+      * Specialized nodes are useful to *provide convenience*
+
+    2. **Extensibility**
+      * Developers demand the *ability to extend* existing elements
+      * *Creating new functionality* on top the already provided elements
+
+    > Neither X3DOM nor XML3D covers both aspects to the degree
+    > necessary for a wider adoption of Dec3D on the Web.
+    </section>
+
+    <section>
+        <h2>Our Approach</h2>
+        <ul>
+        <li>Minimum set of necessary new HTML elements</li>
+        <li>These <b>core elements</b> offer the required functionality to embed 3D graphics</li>
+        <li>Used as <b>building blocks</b> for user-defined elements by leveraging the power of <a href="http://WebComponents.org/" target="_blank">Web Components</a>
+        <ul>
+            <li>Cover domain-specific functionality</li>
+            <li>Provide additional convenience through an easy-to-use interface</li>
+        </ul></li>
+        <li>Existing nodes in X3DOM and XML3D can be implemented using our unifying approach</li>
+        </ul>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h1>Core Elements of Declarative 3D</h1>
+    </section>
+    
+    <!-- <section>
+    <h2>General Proposal</h2>
+    <ul>
+    <li>Follow generic fashion of XML3D</li>
+    <li>Specify very few <i>core elements</i></li>
+    <li>Leverage recent Web technologies (i.e. Web Components)</li>
+    <li>Creating, sharing, and reusing of user-defined elements</li>
+    </ul>
+    <p class="cg-clear question"><b>8 interrelated core elements</b> for rendering, data description, scene graph organization, and a root</p>
+    </section> -->
+
+    <section>
+        <h2>Rendering Elements</h2>
+        <ul>
+        <li>Act as data sink to the renderer</li>
+        <li>Feed data into respective stages of the rendering process</li>
+        <!-- <li>Renderer independent, but specifically targeting rasterization due to the web-based environment and WebGL</li> -->
+        <li><i>Drawable</i> represents geometry in the scene and supports common low-level rendering primitives</li>
+        <li><i>Material</i> defines geometry's surface appearance by configuring the properties of a material model</li>
+        <li><i>Light</i> represents a light source in the scene using built-in light models (e.g. distant, point, spot)</li>
+        </ul>
+    </section>
+
+    <!-- <section data-markdown>
+    ### Rendering Primitives
+    
+    * *Drawable* represents geometry in the scene
+    * Supports common low-level rendering primitives
+    * Vertex position of the geometry is mandatory input data
+    * Index to fetch vertices of the geometry for each rendering primitive can be utilized
+    * Other input data will be made available to the renderer
+    </section> -->
+
+    <!-- <section data-markdown>
+    ### Appearance and Lighting
+
+    * *Material* that defines geometry's surface appearance
+    * Uses built-in material models (e.g. matte, diffuse, Phong)
+    * Configures the material model's properties
+    * *Light* represents light source in the scene
+    * Uses built-in light models (e.g. distant, point, spot)
+    * Taken into account by Material of Drawable during rendering
+    </section> -->
+    
+    <!-- <section class="cg-hidden" data-markdown>
+    ### Custom Material Models
+
+    * Go beyond ubershaders
+    * Take advantage of shade.js [Sons et al. 2014]
+    * Portable material descriptions
+    * Material may refer to a user-defined material model
+    </section> -->
+
+    <section>
+        <h2>Data Elements</h2>
+        <ul>
+        <li>Heavily builds upon the concept of generic dataflow processing [Klein et al. 2012]</li>
+        <li>Data container exposing a <i>DataTable</i> with entries</li>
+        <li>Entries consisting of an unique name, type of available data, and a <i>BufferAccessor</i></li>
+        <!-- <li>Name of a data entry is arbitrary, but it may have a semantic for the data sink that it feeds into</li> -->
+        <!-- <li>Type identifier has predefined values of low-level types</li> -->
+        <li>BufferAccessor acts as an interface to the actual <i>data represented as an n-dimensional array</i> of the defined type</li>
+        </ul>
+    </section>
+
+    <!-- <section>
+        <h2>Data Compositing and Processing</h2>
+<pre><code><data id="a" keep="position, texcoord, index">
+    <data src="cube.json"></data>
+    <value name="texcoord" type="float2">
+    4 0 0.33 0.25 0.33 0 0.66 0.25 0.66 ...
+    </value>
+</data>
+<data id="b" compute="rgbeToFloat()">
+    <img name="rgbeImg" src="sky-cube.png"/>
+</data>
+
+<data id="background-cube">
+    <data src="#a"></data>
+    <data compute="assign({envmap:rgbaImg})">
+        <data src="#b"></data>
+    </data>
+</data>
+</code></pre>
+    </section> -->
+
+    <section>
+        <h2>Scene Graph Elements</h2>
+        <ul>
+        <li>Rendering elements of the scene (i.e. Drawable, Light) can be organized by being placed into a <i>Group</i></li>
+        <li>Tree of Groups represents the transformation hierarchy of the scene within a root element</li>
+        <!-- <li>Geometry of a scene is usually defined in a local coordinate system</li>
+        <li>Built-in Web Component *sg-mesh* for vast majority of usual scene content</li> -->
+        <li><i>Camera</i> represents a view point and camera parameters</li>
+        </ul>
+    </section>
+    
+    <section>
+        <h2>All Core Elements</h2>
+        <img class="stretch" src="media/core_elements.svg"/>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h1>Building upon Core Elements of Dec3D</h1>
+    </section>
+
+    <section data-markdown>
+    ## On top of these Core Elements
+    
+    * Develop user-defined elements
+    * Custom Elements - API to register new elements
+    * HTML Templates - reuse DOM-fragments
+    * Shadow DOM - encapsulate and scope subtrees of the document
+    </section>
+
+    <section>
+        <h2>Example: Custom Element x-label</h2>
+        <img class="stretch" src="media/x-label.png"/>
+    </section>
+
+    <section>
+        <h2>Example: Animated Character "Ciccio"</h2>
+        <a href="samples/ciccio.html" target="_blank"><img class="stretch" src="media/sample_ciccio.png"/></a>
+    </section>
+
+</section>
+
+
+<section>
+    <section>
+        <h1>Representation of Pre-Existing Elements</h1>
+    </section>
+
+    <section>
+        <h2>X3DOM Nodes</h2>
+        <ul>
+        <li>Current <a href="http://doc.x3dom.org/author/nodes.html" target="_blank">X3DOM specification</a> contains about 187 individual leaf nodes (i.e. HTML elements)</li>
+        <li>Some elements are outside the scope for 3D graphics</li>
+        <li>Script gathers the list of required components</li>
+        <li>Every element must be prefixed with "x3d-"</li>
+        <li>We addressed most common scene content such as materials, transforms and various generated shapes</li>
+        <li>Foundation for a compatibility layer to display existing X3DOM scenes</li>
+        <li><a href="samples/HelloX3DOM.html" target="_blank">Example "Hello X3DOM"</a></li>
+        </ul>
+    </section>
+
+    <!-- <section>
+        <h2>Example: Hello X3DOM</h2>
+        <a href="/projects/negative/samples/HelloX3DOM.html" target="_blank"><img class="stretch" src="media/sample_hello-x3dom.jpg"/></a>
+    </section> -->
+
+    <section>
+        <h2>XML3D Elements</h2>
+        <ul>
+        <li><a href="http://xml3d.org/xml3d/specification/5.1/" target="_blank">XML3D specification</a> has traditionally contained a relatively small number of elements</li>
+        <li>Prefix every element with "xml3d-"</li>
+        <li>XML3D currently contains many (10+) elements which act as input to Xflow’s data processing</li>
+        <li>For convenience XML3D also offers the xml3d-transform element, which composes a matrix from attributes</li>
+        </ul>
+    </section>
+</section>
+
+<section>
+    <section>
+        <h1>Conclusion</h1>
+    </section>
+
+    <section data-markdown>
+    ## Core elements + Web Components
+
+    * Rationalize elements of existing Dec3D approaches
+    * Streamline Dec3D down to its essential components
+    </section>
+
+    <section>
+        <h2>New integration model</h2>
+        <img src="media/new_integration.svg"/>
+        <ul>
+        <li>Fifth level of integration that resides at the top of the stack and consists of re-usable and sharable elements</li>
+        <li>Keep the <i>basic building blocks of Dec3D</i> separated from convenience and domain-specific functionality</li>
+        <!-- <li>Significantly reduce effort for implementation of Dec3D</li> -->
+        </ul>
+    </section>
+    
+    <section>
+        <h2>New integration model</h2>
+        <ul>
+        <li>Allow Web developers to take advantage of selected components that exactly fit their needs</li>
+        <li>Engage users and communities with Dec3D, that can build domain-specific elements as well as share them</li>
+        <li><q>"Hereby, we envision community-maintained repositories of reuseable components for a wide range of Dec3D usecases."</q></li>
+        <li style="list-style-type: none; background: linear-gradient(to bottom, #5b5072 0%,#443c56 100%);">Achieving the primary goal of the Dec3D community to increase the adoption of Dec3D on the Web</li>
+        </ul>
+    </section>
+</section>
+
+<section>
+    <section data-markdown>
+    ## Thanks to our supporters
+
+    * Intel Visual Computing Institute
+    * European Union’s Seventh Framework Programme
+      * FI-Core (grant agreement no. 632893)
+    * European Union’s H2020 Framework Programme
+      * CIMPLEX (grant agreement no. 641191)
+    </section>
+
+    <section>
+        <h1>Thanks!</h1>
+        <h2>Questions?</h2>
+    </section>
+</section>
+
+            </div>
+
+        </div>
+
+        <script src="../reveal.js/lib/js/head.min.js"></script>
+        <script src="../reveal.js/js/reveal.min.js"></script>
+
+        <script>
+
+            // Full list of configuration options available here:
+            // https://github.com/hakimel/reveal.js#configuration
+            Reveal.initialize({
+                controls: true,
+                progress: true,
+                history: true,
+                center: true,
+
+
+                theme: Reveal.getQueryHash().theme, // available themes are i../reveal.js/css/theme
+                transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+                transitionSpeed: 'fast',
+
+
+                // Optional libraries used to extend on reveal.js
+                dependencies: [
+                    { src: '../reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+                    { src: '../reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+                    { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+                    { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+                    { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+
+                    { src: '../reveal.js/plugin/jquery/jquery.js'},
+                    { src: '../reveal.js/plugin/dynframe/dynframe.js', async: true },
+                    { src: '../reveal.js/plugin/cg-master/cg-master.js', async: true }
+                ]
+            });
+
+        </script>
+
+    </body>
+</html>

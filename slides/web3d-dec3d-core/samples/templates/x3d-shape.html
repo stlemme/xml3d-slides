@@ -1,0 +1,22 @@
+<template
+	appearance="x3dom.nodeTypes.X3DAppearanceNode"
+	geometry="x3dom.nodeTypes.X3DGeometryNode"
+	
+	bboxCenter="0,0,0"
+	bboxSize="-1,-1,-1"
+	isPickable="true"
+	isPickable="0"
+	metadata="X3DMetadataObject"
+	render="true">
+	
+	<w3d-material id="mat" model="phong">
+		<content select="x3d-appearance"></content>
+	</w3d-material>
+	
+	<sg-group material="#mat">
+		<!-- TODO: this must be more generic -->
+		<content select="x3d-box"></content>
+		<content select="x3d-cone"></content>
+		<content select="x3d-sphere"></content>
+	</sg-group>
+</template>

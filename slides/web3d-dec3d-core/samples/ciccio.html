@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>NeGATIVE test document</title>
+        <script type="text/javascript" src="negative.js"></script>
+        <script type="text/javascript" src="animated-character.js"></script>
+
+        <style>
+            html, body {
+                margin: 0px;
+                padding: 0px;
+                position: relative;
+            }
+        </style>
+    </head>
+
+    <body>
+        <canvas is="w3d-canvas" style="width: 100%; height: 100%">
+
+            <sg-group id="meshGroup">
+                <animated-character id="ciccio"></animated-character>
+            </sg-group>
+
+            <w3d-data id="light-data">
+                <w3d-value type="float" name="intensity">0.7</w3d-value>
+                <w3d-value type="float3" name="color">1 1 1</w3d-value>
+            </w3d-data>
+
+            <sg-group translation="30 40 30">
+                <w3d-light model="point" src="#light-data"></w3d-light>
+            </sg-group>
+
+            <sg-group translation="-30 40 30">
+                <w3d-light model="point" src="#light-data"></w3d-light>
+            </sg-group>
+
+            <sg-group translation="0 13 50">
+                <trackball-controller>
+                    <sg-perspective-camera fov="45"></sg-perspective-camera>
+                </trackball-controller>
+            </sg-group>
+
+        </canvas>
+
+    </body>
+</html>

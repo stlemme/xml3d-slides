@@ -1,0 +1,17 @@
+<template
+	size="2 2 2"
+	subdivision="2 2 2"
+	ccw="true"
+	hasHelperColors="false"
+	lit="true"
+	metadata="X3DMetadataObject"
+	solid="true"
+	useGeoCache="true">
+	<sg-mesh>
+		<w3d-data compute="x3d.createBox()">
+			<w3d-value name="segments" type="int">{{subdivision}}</w3d-value>
+			<w3d-value name="extend" type="float">{{size}}</w3d-value>
+			<w3d-value name="primitiveType" type="string">triangles</w3d-value>
+		</w3d-data>
+	</sg-mesh>
+</template>
