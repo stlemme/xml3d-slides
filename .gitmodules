@@ -1,0 +1,3 @@
+[submodule "slides/reveal.js"]
+	path = slides/reveal.js
+	url = https://github.com/xml3d/reveal.js.git
