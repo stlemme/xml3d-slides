@@ -14,7 +14,7 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-        <link rel="stylesheet" href="../reveal.js/css/reveal.min.css">
+        <link rel="stylesheet" href="../reveal.js/css/reveal.css">
         <link rel="stylesheet" href="../reveal.js/css/theme/cg-saar.css" id="theme">
 
         <!-- For syntax highlighting -->
@@ -344,7 +344,7 @@
         </div>
 
         <script src="../reveal.js/lib/js/head.min.js"></script>
-        <script src="../reveal.js/js/reveal.min.js"></script>
+        <script src="../reveal.js/js/reveal.js"></script>
 
         <script>
 
@@ -355,6 +355,8 @@
                 progress: true,
                 history: true,
                 center: true,
+                slideNumber: true,
+                rollingLinks: true,
 
 
                 theme: Reveal.getQueryHash().theme, // available themes are i../reveal.js/css/theme
@@ -369,11 +371,7 @@
                     { src: '../reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
                     { src: '../reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
                     { src: '../reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
-                    { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
-
-                    { src: '../reveal.js/plugin/jquery/jquery.js'},
-                    { src: '../reveal.js/plugin/dynframe/dynframe.js', async: true },
-                    { src: '../reveal.js/plugin/cg-master/cg-master.js', async: true }
+                    { src: '../reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
                 ]
             });
 
